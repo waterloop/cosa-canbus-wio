@@ -1,0 +1,28 @@
+pkg:
+  name: cosa-canbus-wio
+  description: "Elecfreaks CAN-BUS 1.2 library for Cosa"
+  repository: "https://github.com/hermord/cosa-canbus-wio"
+  version: 0.0.1
+  author: "Dmytro Shynkevych"
+  contributors: ["Bob Wei <bobqywei@gmail.com> (https://github.com/bobqywei)"]
+  organization: "Waterloop"
+  keywords: ["canbus"]
+  license: "MIT"
+  header_only: false
+  platform: avr
+  framework:
+  - cosa
+  board:
+  - uno
+  compile_flags: []
+  ide: none
+
+targets:
+  default: tests
+  create:
+    tests:
+      board: uno
+      target_compile_flags: []
+      pkg_compile_flags: []
+
+dependencies: {}
