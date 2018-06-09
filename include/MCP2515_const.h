@@ -202,8 +202,8 @@
 
 // clock
 
-#define MCP_16MHz	1
-#define MCP_8MHz	2
+#define MCP_16MHz   1
+#define MCP_8MHz    2
 
 // speed 16M
 
