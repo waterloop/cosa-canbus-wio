@@ -12,7 +12,6 @@ void MCP2515::reset(void)
     spi.release();
     spi.end();
     cs_pin.high();
-    delay(10);
 }
 
 uint8_t MCP2515::read_register(const uint8_t address)
@@ -221,15 +220,15 @@ void MCP2515::init_buffers(void)
     set_register(MCP_RXB1CTRL, 0);
 }
 
-uint8_t MCP2515::init(const uint8_t bus_rate) {
-    this->reset();
+uint8_t MCP2515::begin(const uint8_t bus_rate) {
+    reset();
 
-    uint8_t res = this->set_control_mode(MODE_CONFIG);
+    uint8_t res = set_control_mode(MODE_CONFIG);
     if (res != MCP2515_OK) {
         #if DEBUG_MODE
         trace << "Switching to config mode failed\n"; 
         #endif
-        return res;
+        return CAN_FAILINIT;
     }
     #if DEBUG_MODE
         trace << "Config mode entered successfully\n";
@@ -239,7 +238,7 @@ uint8_t MCP2515::init(const uint8_t bus_rate) {
         #if DEBUG_MODE
         trace << "Setting transmission rate failed\n";
         #endif
-        return res;
+        return CAN_FAILINIT;
     }
     #if DEBUG_MODE
     trace << "Transmission rate set successfully\n";
@@ -262,17 +261,17 @@ uint8_t MCP2515::init(const uint8_t bus_rate) {
     #endif
     
     res = set_control_mode(MODE_NORMAL);
-    if(res){
+    if (res) {
         #if DEBUG_MODE        
         trace << "Retuning to normal mode failed\n";
         #endif           
-        return res;
+        return CAN_FAILINIT;
     }
 
     #if DEBUG_MODE
     trace << "Returned to normal mode\n";
     #endif
-    return res;
+    return CAN_OK;
 }
 
 void MCP2515::write_id(const uint8_t mcp_addr, const uint8_t is_extended,
@@ -320,11 +319,11 @@ void MCP2515::read_id(const uint8_t mcp_addr, uint8_t* is_extended, uint32_t* id
 void MCP2515::write_CAN_msg( const uint8_t buffer_sidh_addr)
 {
     uint8_t mcp_addr = buffer_sidh_addr;
-    set_registers(mcp_addr + 5, this->message_data, data_length);
+    set_registers(mcp_addr + 5, this->message_data, this->data_length);
     if (remote_request_flag == 1) {
-        data_length |= MCP_RTR_MASK;
+        this->data_length |= MCP_RTR_MASK;
     }
-    set_register((mcp_addr+4), data_length);
+    set_register((mcp_addr+4), this->data_length);
     write_id(mcp_addr, this->ext_flag, id);
 }
 
@@ -334,16 +333,16 @@ void MCP2515::read_CAN_msg(const uint8_t buffer_sidh_addr)
     read_id(mcp_addr, &this->ext_flag, &id);
 
     ctrl = read_register(mcp_addr - 1);
-    data_length = read_register(mcp_addr + 4);
+    this->data_length = read_register(mcp_addr + 4);
 
     if ((ctrl & 0x08)) {
-        remote_request_flag = 1;
+        this->remote_request_flag = 1;
     } else {
-        remote_request_flag = 0;
+        this->remote_request_flag = 0;
     }
 
-    data_length &= MCP_DLC_MASK;
-    read_registers(mcp_addr + 5, this->message_data, data_length);
+    this->data_length &= MCP_DLC_MASK;
+    read_registers(mcp_addr + 5, this->message_data, this->data_length);
 }
 
 void MCP2515::start_transmit(const uint8_t mcp_addr)
@@ -367,10 +366,6 @@ uint8_t MCP2515::get_next_free_buf(uint8_t *txbuf_n)
         }
     }
     return MCP_ALLTXBUSY;
-}
-
-uint8_t MCP2515::begin(uint8_t bus_rate) {
-    return (init(bus_rate) == MCP2515_OK) ? CAN_OK : CAN_FAILINIT;
 }
 
 uint8_t MCP2515::init_mask(uint8_t num, uint8_t ext, uint32_t ulData) {
@@ -477,14 +472,14 @@ uint8_t MCP2515::set_msg(uint32_t id, uint8_t ext, uint8_t len, uint8_t *data) {
 }
 
 uint8_t MCP2515::clear_msg() {
-    for(int i = 0; i < data_length; i++) {
+    for(int i = 0; i < this->data_length; i++) {
         this->message_data[i] = 0x00;
     }
     id = 0;
-    data_length = 0;
-    ext_flag = 0;
-    remote_request_flag = 0;
-    filter_flag = 0;
+    this->data_length = 0;
+    this->ext_flag = 0;
+    this->remote_request_flag = 0;
+    this->filter_flag = 0;
     return MCP2515_OK;
 }
 
@@ -544,10 +539,10 @@ uint8_t MCP2515::read_msg()
 // Copy message buffer from inside to outside
 uint8_t MCP2515::read_buffer(uint8_t *buf)
 {
-    read_msg();
-    for (int i = 0; i < data_length; ++i)
+    this->read_msg();
+    for (int i = 0; i < this->data_length; ++i)
         buf[i] = this->message_data[i];
-    return data_length;
+    return this->data_length;
 }
 
 uint8_t MCP2515::check_received(void) {
@@ -561,5 +556,5 @@ uint8_t MCP2515::error_state(void) {
 }
 
 uint32_t MCP2515::get_id(void) {
-    return id;
+    return this->id;
 }

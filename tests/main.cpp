@@ -3,7 +3,7 @@
 #include "Cosa/Trace.hh"
 #include "Cosa/UART.hh"
 
-MCP2515 bus(Board::D9);
+MCP2515 bus(Board::D10);
 
 void setup() {
     uart.begin(115200);
