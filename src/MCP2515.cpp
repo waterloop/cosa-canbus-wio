@@ -166,12 +166,12 @@ uint8_t MCP2515::read_buffer(uint8_t *buf)
     return this->data_length;
 }
 
-uint8_t MCP2515::check_received(void) {
+bool MCP2515::get_message_received_state(void) {
     uint8_t res = read_status();
     return (res & MCP_STAT_RXIF_MASK) ? CAN_MSGAVAIL : CAN_NOMSG;
 }
 
-uint8_t MCP2515::error_state(void) {
+uint8_t MCP2515::get_error(void) {
     uint8_t eflg = read_register(MCP_EFLG);
     return (eflg & MCP_EFLG_ERRORMASK) ? CAN_CTRLERROR : CAN_OK;
 }

@@ -12,8 +12,8 @@ public:
     uint8_t init_filter(uint8_t num, uint8_t ext, uint32_t data);
     uint8_t send_buffer(uint32_t id, uint8_t ext, uint8_t len, uint8_t *buf);
     uint8_t read_buffer(uint8_t *buf);
-    uint8_t check_received(void);
-    uint8_t error_state(void);
+    uint8_t get_error(void);
+    uint8_t get_message_received_state(void);
     uint32_t get_id(void);
 
 private:
