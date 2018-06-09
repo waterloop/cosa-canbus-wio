@@ -1,6 +1,6 @@
 pkg:
   name: cosa-canbus-wio
-  description: "Elecfreaks CAN-BUS 1.2 library for Cosa"
+  description: "MCP2515 CAN-BUS Shield library for Cosa"
   repository: "https://github.com/hermord/cosa-canbus-wio"
   version: 0.0.1
   author: "Dmytro Shynkevych <dm.shynk@gmail.com> (https://github.com/hermord)"
