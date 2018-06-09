@@ -1,0 +1,28 @@
+pkg:
+  name: cosa-canbus-wio
+  description: "MCP2515 CAN-BUS Shield library for Cosa"
+  repository: "https://github.com/hermord/cosa-canbus-wio"
+  version: 0.0.1
+  author: "Dmytro Shynkevych <dm.shynk@gmail.com> (https://github.com/hermord)"
+  contributors: ["Bob Wei <bobqywei@gmail.com> (https://github.com/bobqywei)"]
+  organization: "Waterloop"
+  keywords: ["canbus"]
+  license: "MIT"
+  header_only: false
+  platform: avr
+  framework:
+  - cosa
+  board:
+  - uno
+  compile_flags: []
+  ide: none
+
+targets:
+  default: tests
+  create:
+    tests:
+      board: uno
+      target_compile_flags: []
+      pkg_compile_flags: []
+
+dependencies: {}

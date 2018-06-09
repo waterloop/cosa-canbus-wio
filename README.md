@@ -1,2 +1,2 @@
-# cosa-canbus-wio
-Elecfreaks CAN-BUS 1.2 library for Cosa
+# MCP2515 CAN-BUS Shield
+MCP2515 CAN-BUS Shield library for Cosa
