@@ -1,28 +1,69 @@
 pkg:
-  name: cosa-canbus-wio
-  description: "MCP2515 CAN-BUS Shield library for Cosa"
-  repository: "https://github.com/hermord/cosa-canbus-wio"
-  version: 0.0.1
-  author: "Dmytro Shynkevych <dm.shynk@gmail.com> (https://github.com/hermord)"
-  contributors: ["Bob Wei <bobqywei@gmail.com> (https://github.com/bobqywei)"]
-  organization: "Waterloop"
-  keywords: ["canbus"]
-  license: "MIT"
-  header_only: false
-  platform: avr
-  framework:
-  - cosa
-  board:
-  - uno
-  compile_flags: []
   ide: none
 
-targets:
-  default: tests
-  create:
-    tests:
-      board: uno
-      target_compile_flags: []
-      pkg_compile_flags: []
+  meta:
+    name: cosa-canbus-wio
+    description: MCP2515 CAN-BUS Shield library for Cosa
+    author: Dmytro Shynkevych <dm.shynk@gmail.com> (https://github.com/hermord)
+    contributors: ["Bob Wei <bobqywei@gmail.com> (https://github.com/bobqywei)"]
+    organization: "Waterloop"
+    version: 0.0.2
+    keywords:
+    - avr
+    - c
+    - c++
+    - wio
+    - cosa
+    - canbus
+    license: MIT
 
-dependencies: {}
+  config:
+    minimum_wio_version: 0.3.1
+    supported_platforms:
+    - avr
+    supported_frameworks:
+    - cosa
+    supported_boards:
+    - uno
+
+  compile_options:
+    header_only: false
+    platform: avr
+  flags:
+    allow_only_global_flags: false
+    allow_only_required_flags: false
+    global_flags: []
+    visibility: PRIVATE
+  definitions:
+    allow_only_global_definitions: false
+    allow_only_required_definitions: false
+    global_definitions: []
+    visibility: PRIVATE
+
+targets:
+  default: sender
+  create:
+    sender:
+      src: test/sender
+      framework: cosa
+      board: uno
+      flags:
+        global_flags: []
+        target_flags: []
+        pkg_flags: []
+      definitions:
+        global_definitions: []
+        target_definitions: []
+        pkg_definitions: []
+    receiver:
+      src: test/receiver
+      framework: cosa
+      board: uno
+      flags:
+        global_flags: []
+        target_flags: []
+        pkg_flags: []
+      definitions:
+        global_definitions: []
+        target_definitions: []
+        pkg_definitions: []
