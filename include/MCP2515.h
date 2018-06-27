@@ -14,9 +14,9 @@ namespace wlp {
         uint8_t set_mask(uint8_t num, uint32_t data);
         uint8_t send_buffer(uint32_t id, uint8_t len, uint8_t *buf);
         void read_buffer(uint8_t len, uint8_t *buf);
-        uint8_t get_error(void);
-        uint8_t get_message_state(void);
-        uint32_t get_id(void);
+        uint8_t get_error();
+        uint8_t get_message_state();
+        uint32_t get_id();
 
     private:
         uint32_t  id;  // ID of this device on CAN bus
@@ -30,28 +30,33 @@ namespace wlp {
 
         // Control commands
         uint8_t configure_rate(const uint8_t bus_rate);
-        void init_buffers(void);
-        uint8_t read_status(void);
-        void reset(void);
+        void init_buffers();
+        uint8_t read_status();
+        void reset();
         uint8_t set_control_mode(const uint8_t new_mode);
 
         // Register commands
         uint8_t read_register(const uint8_t address);
-        void read_registers(const uint8_t address,
-                            uint8_t values[], 
-                            const uint8_t n);
-        void modify_register(const uint8_t address,
-                             const uint8_t mask,
-                             const uint8_t data);
-        void set_register(const uint8_t address,
-                          const uint8_t value);
-        void set_registers(const uint8_t address,
-                           uint8_t values[],
-                           const uint8_t n);
+        void read_registers(
+                const uint8_t address,
+                uint8_t values[], 
+                const uint8_t n);
+        void modify_register(
+                const uint8_t address,
+                const uint8_t mask,
+                const uint8_t data);
+        void set_register(
+                const uint8_t address,
+                const uint8_t value);
+        void set_registers(
+                const uint8_t address,
+                uint8_t values[],
+                const uint8_t n);
 
         // Generic transmission commands
-        void write_id(const uint8_t mcp_addr,
-                      const uint32_t id);
+        void write_id(
+                const uint8_t mcp_addr,
+                const uint32_t id);
         uint32_t read_id(const uint8_t mcp_addr);
         void write_CAN_msg(const uint8_t buffer_sidh_addr);
         void read_CAN_msg(const uint8_t buffer_sidh_addr);

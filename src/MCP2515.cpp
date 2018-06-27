@@ -8,30 +8,30 @@ MCP2515::MCP2515(Board::DigitalPin cs_pin)
 // PUBLIC
 
 uint8_t MCP2515::begin(const uint8_t bus_rate) {
-    this->reset();
+    reset();
 
     uint8_t res = set_control_mode(Mode::Config);
     if (res != Result::OK) {
-        #if DEBUG_MODE
+#if DEBUG_MODE
         trace << "Switching to config mode failed\n";
-        #endif
+#endif
         return Result::Failed;
     }
-    #if DEBUG_MODE
+#if DEBUG_MODE
         trace << "Config mode entered successfully\n";
-    #endif
+#endif
 
-    if (this->configure_rate(bus_rate) != Result::OK) {
-        #if DEBUG_MODE
+    if (configure_rate(bus_rate) != Result::OK) {
+#if DEBUG_MODE
         trace << "Setting transmission rate failed\n";
-        #endif
+#endif
         return Result::Failed;
     }
-    #if DEBUG_MODE
+#if DEBUG_MODE
     trace << "Transmission rate set successfully\n";
-    #endif
+#endif
 
-    this->init_buffers();
+    init_buffers();
     // Enable interrupts on receipt
     set_register(Register::InterruptEnable,
                  InterruptFlag::RX0 | InterruptFlag::RX0);
@@ -45,49 +45,50 @@ uint8_t MCP2515::begin(const uint8_t bus_rate) {
 
     res = set_control_mode(Mode::Normal);
     if (res != Result::OK) {
-        #if DEBUG_MODE
+#if DEBUG_MODE
         trace << "Retuning to normal mode failed\n";
-        #endif
+#endif
         return Result::Failed;
     }
 
-    #if DEBUG_MODE
+#if DEBUG_MODE
     trace << "Returned to normal mode\n";
-    #endif
+#endif
     return Result::OK;
 }
 
 uint8_t MCP2515::set_mask(uint8_t mask_number, uint32_t mask) {
 
     uint8_t res = Result::OK;
-    #if DEBUG_MODE
+#if DEBUG_MODE
     trace << "Starting mask setup\n";
-    #endif
+#endif
     res = set_control_mode(Mode::Config);
     if (res > 0) {
-        #if DEBUG_MODE
+#if DEBUG_MODE
         trace << "Switching to config mode failed\n";
-        #endif
+#endif
         return Result::Failed;
     }
 
-    if (mask_number == 0)
+    if (mask_number == 0) {
         write_id(Register::RXM0SIDH, id);
-    else if(mask_number == 1)
+    } else if (mask_number == 1) {
         write_id(Register::RXM1SIDH, id);
-    else
+    } else {
         return Result::Failed;
+    }
 
     res = set_control_mode(Mode::Normal);
     if (res != Result::OK) {
-        #if DEBUG_MODE
+#if DEBUG_MODE
         trace << "Returning to normal model failed\nMask setup failed\n";
-        #endif
+#endif
         return res;
     }
-    #if DEBUG_MODE
+#if DEBUG_MODE
     trace << "Mask setup successfull\n";
-    #endif
+#endif
 
     return Result::OK;
 }
@@ -95,57 +96,37 @@ uint8_t MCP2515::set_mask(uint8_t mask_number, uint32_t mask) {
 uint8_t MCP2515::set_filter(uint8_t filter_number, uint32_t filter)
 {
     uint8_t res = Result::OK;
-    #if DEBUG_MODE
+#if DEBUG_MODE
     trace << "Starting filter setup\n";
-    #endif
+#endif
     res = set_control_mode(Mode::Config);
     if(res > 0) {
-        #if DEBUG_MODE
+#if DEBUG_MODE
         trace << "Switching to config mode failed\n";
-        #endif
+#endif
         return Result::OK;
     }
 
-    switch(filter_number) {
-        case 0:
-            write_id(Register::RXF0SIDH, filter);
-        break;
-
-        case 1:
-            write_id(Register::RXF1SIDH, filter);
-        break;
-
-        case 2:
-            write_id(Register::RXF2SIDH, filter);
-        break;
-
-        case 3:
-            write_id(Register::RXF3SIDH, filter);
-        break;
-
-        case 4:
-            write_id(Register::RXF4SIDH, filter);
-        break;
-
-        case 5:
-            write_id(Register::RXF5SIDH, filter);
-        break;
-
-        default:
-        res = Result::Failed;
+    if (filter_number < 0 || filter_number > 5) {
+        return Result::Failed;
+    } else if (filter_number < 3) {
+        // Filter registers are 4 bytes wide, so this works
+        write_id(Register::RXF0SIDH + 0x04 * filter_number, filter);
+    } else {  // 3 <= filter_number <= 5
+        write_id(Register::RXF3SIDH + 0x04 * (filter_number - 3), filter)
     }
 
     res = set_control_mode(Mode::Normal);
     if(res != Result::OK) {
-        #if DEBUG_MODE
+#if DEBUG_MODE
         trace << "Returning to normal mode failed\nFilter setup failed\n";
-        #endif
+#endif
         return res;
     }
 
-    #if DEBUG_MODE
+#if DEBUG_MODE
     trace << "Filter setup successful\n";
-    #endif
+#endif
 
     return Result::OK;
 }
@@ -158,7 +139,7 @@ uint8_t MCP2515::send_buffer(uint32_t id, uint8_t len, uint8_t *buf)
 
 void MCP2515::read_buffer(uint8_t len, uint8_t *buf)
 {
-    this->read_msg();
+    read_msg();
     for (int i = 0; i < this->data_length && i < len; ++i)
         buf[i] = this->message_data[i];
 }
@@ -500,17 +481,18 @@ uint8_t MCP2515::send_msg()
     uint16_t timeout = 0;
 
     do {
-        res = this->get_next_free_buf(&txbuf_n);
+        res = get_next_free_buf(&txbuf_n);
         ++timeout;
     } while (res == Result::AllBuffersBusy &&
-             (timeout < Limit::AwaitBufferTimeout));
+             timeout < Limit::AwaitBufferTimeout);
 
-    if(timeout >= Limit::AwaitBufferTimeout)
+    if (timeout >= Limit::AwaitBufferTimeout) {
         return Result::AwaitBufferTimedOut;
+    }
 
     timeout = 0;
-    this->write_CAN_msg(txbuf_n);
-    this->start_transmit(txbuf_n);
+    write_CAN_msg(txbuf_n);
+    start_transmit(txbuf_n);
 
     do {
         ++timeout;
@@ -525,7 +507,7 @@ uint8_t MCP2515::send_msg()
 
 uint8_t MCP2515::read_msg()
 {
-    uint8_t status = this->read_status(), res;
+    uint8_t status = read_status(), res;
 
     if (status & Status::RX0InterruptFired) {
         read_CAN_msg(Buffer::RX0);
