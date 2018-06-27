@@ -112,7 +112,7 @@ uint8_t MCP2515::set_filter(uint8_t filter_number, uint32_t filter) {
         // Filter registers are 4 bytes wide, so this works
         write_id(Register::RXF0SIDH + 0x04 * filter_number, filter);
     } else {  // 3 <= filter_number <= 5
-        write_id(Register::RXF3SIDH + 0x04 * (filter_number - 3), filter)
+        write_id(Register::RXF3SIDH + 0x04 * (filter_number - 3), filter);
     }
 
     res = set_control_mode(Mode::Normal);
