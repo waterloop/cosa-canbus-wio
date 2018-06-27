@@ -93,8 +93,7 @@ uint8_t MCP2515::set_mask(uint8_t mask_number, uint32_t mask) {
     return Result::OK;
 }
 
-uint8_t MCP2515::set_filter(uint8_t filter_number, uint32_t filter)
-{
+uint8_t MCP2515::set_filter(uint8_t filter_number, uint32_t filter) {
     uint8_t res = Result::OK;
 #if DEBUG_MODE
     trace << "Starting filter setup\n";
@@ -131,14 +130,12 @@ uint8_t MCP2515::set_filter(uint8_t filter_number, uint32_t filter)
     return Result::OK;
 }
 
-uint8_t MCP2515::send_buffer(uint32_t id, uint8_t len, uint8_t *buf)
-{
+uint8_t MCP2515::send_buffer(uint32_t id, uint8_t len, uint8_t *buf) {
     set_msg(id, len, buf);
     return send_msg();
 }
 
-void MCP2515::read_buffer(uint8_t len, uint8_t *buf)
-{
+void MCP2515::read_buffer(uint8_t len, uint8_t *buf) {
     read_msg();
     for (int i = 0; i < this->data_length && i < len; ++i)
         buf[i] = this->message_data[i];
@@ -161,8 +158,7 @@ uint32_t MCP2515::get_id(void) {
 
 // PRIVATE
 
-void MCP2515::reset(void)
-{
+void MCP2515::reset(void) {
     spi.acquire(this);
     spi.begin();
     spi.transfer(Instruction::Reset);
@@ -170,8 +166,7 @@ void MCP2515::reset(void)
     spi.release();
 }
 
-uint8_t MCP2515::read_register(uint8_t address)
-{
+uint8_t MCP2515::read_register(uint8_t address) {
     spi.acquire(this);
     spi.begin();
     spi.transfer(Instruction::Read);
@@ -182,8 +177,7 @@ uint8_t MCP2515::read_register(uint8_t address)
     return ret;
 }
 
-void MCP2515::read_registers(uint8_t address, uint8_t values[], const uint8_t n)
-{
+void MCP2515::read_registers(uint8_t address, uint8_t values[], const uint8_t n) {
     spi.acquire(this);
     spi.begin();
     spi.transfer(Instruction::Read);
@@ -196,8 +190,7 @@ void MCP2515::read_registers(uint8_t address, uint8_t values[], const uint8_t n)
     spi.release();
 }
 
-void MCP2515::set_register(uint8_t address, const uint8_t value)
-{
+void MCP2515::set_register(uint8_t address, const uint8_t value) {
     spi.acquire(this);
     spi.begin();
     spi.transfer(Instruction::Write);
@@ -207,8 +200,7 @@ void MCP2515::set_register(uint8_t address, const uint8_t value)
     spi.release();
 }
 
-void MCP2515::set_registers(uint8_t address, uint8_t values[], const uint8_t n)
-{
+void MCP2515::set_registers(uint8_t address, uint8_t values[], const uint8_t n) {
     spi.acquire(this);
     spi.begin();
     spi.transfer(Instruction::Write);
@@ -222,8 +214,7 @@ void MCP2515::set_registers(uint8_t address, uint8_t values[], const uint8_t n)
 }
 
 void MCP2515::modify_register(uint8_t address, const uint8_t mask,
-                              const uint8_t data)
-{
+                              const uint8_t data) {
     spi.acquire(this);
     spi.begin();
     spi.transfer(Instruction::Modify);
@@ -234,8 +225,7 @@ void MCP2515::modify_register(uint8_t address, const uint8_t mask,
     spi.release();
 }
 
-uint8_t MCP2515::read_status(void)
-{
+uint8_t MCP2515::read_status(void) {
     spi.acquire(this);
     spi.begin();
     spi.transfer(Instruction::ReadStatus);
@@ -245,15 +235,13 @@ uint8_t MCP2515::read_status(void)
 	return status;
 }
 
-uint8_t MCP2515::set_control_mode(const uint8_t new_mode)
-{
+uint8_t MCP2515::set_control_mode(const uint8_t new_mode) {
     modify_register(Register::Control, ControlMask::Mode, new_mode);
     uint8_t mode = read_register(Register::Control) & ControlMask::Mode;
     return (mode == new_mode) ? Result::OK : Result::Failed;
 }
 
-uint8_t MCP2515::configure_rate(const uint8_t bus_rate)
-{
+uint8_t MCP2515::configure_rate(const uint8_t bus_rate) {
     uint8_t set = 1, cfg1, cfg2, cfg3;
     switch (bus_rate)
     {
@@ -338,8 +326,7 @@ uint8_t MCP2515::configure_rate(const uint8_t bus_rate)
     }
 }
 
-void MCP2515::init_buffers(void)
-{
+void MCP2515::init_buffers(void) {
     write_id(Register::RXM0SIDH, 0);
     write_id(Register::RXM1SIDH, 0);
     write_id(Register::RXF0SIDH, 0);
@@ -360,8 +347,7 @@ void MCP2515::init_buffers(void)
     set_register(Register::RXB1CTRL, 0);
 }
 
-void MCP2515::write_id(const uint8_t address, const uint32_t id)
-{
+void MCP2515::write_id(const uint8_t address, const uint32_t id) {
     uint16_t sid = id & 0x0000FFFF;
     uint16_t eid = (id & 0xFFFF0000) >> 16;
     uint8_t buf[4];
@@ -383,8 +369,7 @@ void MCP2515::write_id(const uint8_t address, const uint32_t id)
     set_registers(address, buf, 4);
 }
 
-uint32_t MCP2515::read_id(const uint8_t address)
-{
+uint32_t MCP2515::read_id(const uint8_t address) {
     uint32_t id;
     uint8_t buf[4];
 
@@ -400,8 +385,7 @@ uint32_t MCP2515::read_id(const uint8_t address)
     return id;
 }
 
-void MCP2515::write_CAN_msg(const uint8_t address)
-{
+void MCP2515::write_CAN_msg(const uint8_t address) {
     set_registers(address + 5, this->message_data, this->data_length);
     if (this->remote_request_flag == 1)
         this->data_length |= Mask::ExtendedID;
@@ -409,8 +393,7 @@ void MCP2515::write_CAN_msg(const uint8_t address)
     write_id(address, this->id);
 }
 
-void MCP2515::read_CAN_msg(const uint8_t buffer_sidh_addr)
-{
+void MCP2515::read_CAN_msg(const uint8_t buffer_sidh_addr) {
     uint8_t mcp_addr = buffer_sidh_addr, ctrl;
     this->id = read_id(mcp_addr);
 
@@ -427,15 +410,13 @@ void MCP2515::read_CAN_msg(const uint8_t buffer_sidh_addr)
     read_registers(mcp_addr + 5, this->message_data, this->data_length);
 }
 
-void MCP2515::start_transmit(const uint8_t mcp_addr)
-{
+void MCP2515::start_transmit(const uint8_t mcp_addr) {
     // Control register is offset 1 back
     modify_register(mcp_addr - 1, TXControlMask::RequestInProcess,
                     TXControlMask::RequestInProcess);
 }
 
-uint8_t MCP2515::get_next_free_buf(uint8_t *txbuf_n)
-{
+uint8_t MCP2515::get_next_free_buf(uint8_t *txbuf_n) {
     uint8_t res, ctrlval;
     uint8_t ctrlregs[Limit::TXBuffers] = {
         Register::TXB0CTRL,
@@ -475,8 +456,7 @@ void MCP2515::clear_msg() {
     this->filter_flag = 0;
 }
 
-uint8_t MCP2515::send_msg()
-{
+uint8_t MCP2515::send_msg() {
     uint8_t res, txbuf_n;
     uint16_t timeout = 0;
 
@@ -505,8 +485,7 @@ uint8_t MCP2515::send_msg()
         return Result::OK;
 }
 
-uint8_t MCP2515::read_msg()
-{
+uint8_t MCP2515::read_msg() {
     uint8_t status = read_status(), res;
 
     if (status & Status::RX0InterruptFired) {
