@@ -2,10 +2,20 @@ type: pkg
 
 project:
   name: cosa-canbus-wio
-  version: 0.0.1
+  description: MCP2515 CAN-BUS Shield library for Cosa
+  author: Dmytro Shynkevych <dm.shynk@gmail.com> (https://github.com/hermord)
+  contributors:
+  - Bob Wei <bobqywei@gmail.com> (https://github.com/bobqywei)
+  - Jeff Niu <jeffniu22@gmail.com> (https://github.com/mogball)
+  organization: Waterloop
+  version: 0.0.3
   keywords:
   - wio
   - pkg
+  - avr
+  - c++
+  - canbus
+  - cosa
   compile_options:
     wio_version: 0.4.0
 
