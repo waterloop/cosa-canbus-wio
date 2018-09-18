@@ -1,69 +1,23 @@
-pkg:
-  ide: none
+type: pkg
 
-  meta:
-    name: cosa-canbus-wio
-    description: MCP2515 CAN-BUS Shield library for Cosa
-    author: Dmytro Shynkevych <dm.shynk@gmail.com> (https://github.com/hermord)
-    contributors: ["Bob Wei <bobqywei@gmail.com> (https://github.com/bobqywei)"]
-    organization: "Waterloop"
-    version: 0.0.2
-    keywords:
-    - avr
-    - c
-    - c++
-    - wio
-    - cosa
-    - canbus
-    license: MIT
-
-  config:
-    minimum_wio_version: 0.3.1
-    supported_platforms:
-    - avr
-    supported_frameworks:
-    - cosa
-    supported_boards:
-    - uno
-
+project:
+  name: cosa-canbus-wio
+  version: 0.0.1
+  keywords:
+  - wio
+  - pkg
   compile_options:
-    header_only: false
-    platform: avr
-  flags:
-    allow_only_global_flags: false
-    allow_only_required_flags: false
-    global_flags: []
-    visibility: PRIVATE
-  definitions:
-    allow_only_global_definitions: false
-    allow_only_required_definitions: false
-    global_definitions: []
-    visibility: PRIVATE
+    wio_version: 0.4.0
 
 targets:
-  default: sender
-  create:
-    sender:
-      src: test/sender
-      framework: cosa
-      board: uno
-      flags:
-        global_flags: []
-        target_flags: []
-        pkg_flags: []
-      definitions:
-        global_definitions: []
-        target_definitions: []
-        pkg_definitions: []
-    receiver:
-      src: test/receiver
-      framework: cosa
-      board: uno
-      flags:
-        global_flags: []
-        target_flags: []
-        pkg_flags: []
-      definitions:
-        global_definitions: []
-        target_definitions: []
-        pkg_definitions: []
+  sender:
+    src: tests/sender
+    platform: avr
+    framework: cosa
+    board: uno
+  receiver:
+    src: tests/receiver
+    platform: avr
+    framework: cosa
+    board: uno
+
