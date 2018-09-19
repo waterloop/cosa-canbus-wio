@@ -209,96 +209,161 @@ namespace InterruptFlag {
     };
 }
 
-#define MCP_16MHz_1000kBPS_CFG1 (0x00)
-#define MCP_16MHz_1000kBPS_CFG2 (0xD0)
-#define MCP_16MHz_1000kBPS_CFG3 (0x82)
+/* Clock Speeds */
+enum {
+    MCP_16MHz = 1,
+    MCP_8MHz  = 2
+};
 
-#define MCP_16MHz_500kBPS_CFG1 (0x00)
-#define MCP_16MHz_500kBPS_CFG2 (0xF0)
-#define MCP_16MHz_500kBPS_CFG3 (0x86)
+/* Speed 16MHz */
+enum {
+    MCP_16MHz_1000kBPS_CFG1 = 0x00,
+    MCP_16MHz_1000kBPS_CFG2 = 0xD0,
+    MCP_16MHz_1000kBPS_CFG3 = 0x82,
 
-#define MCP_16MHz_250kBPS_CFG1 (0x41)
-#define MCP_16MHz_250kBPS_CFG2 (0xF1)
-#define MCP_16MHz_250kBPS_CFG3 (0x85)
+    MCP_16MHz_500kBPS_CFG1 = 0x00,
+    MCP_16MHz_500kBPS_CFG2 = 0xF0,
+    MCP_16MHz_500kBPS_CFG3 = 0x86,
 
-#define MCP_16MHz_200kBPS_CFG1 (0x01)
-#define MCP_16MHz_200kBPS_CFG2 (0xFA)
-#define MCP_16MHz_200kBPS_CFG3 (0x87)
+    MCP_16MHz_250kBPS_CFG1 = 0x41,
+    MCP_16MHz_250kBPS_CFG2 = 0xF1,
+    MCP_16MHz_250kBPS_CFG3 = 0x85,
 
-#define MCP_16MHz_125kBPS_CFG1 (0x03)
-#define MCP_16MHz_125kBPS_CFG2 (0xF0)
-#define MCP_16MHz_125kBPS_CFG3 (0x86)
+    MCP_16MHz_200kBPS_CFG1 = 0x01,
+    MCP_16MHz_200kBPS_CFG2 = 0xFA,
+    MCP_16MHz_200kBPS_CFG3 = 0x87,
 
-#define MCP_16MHz_100kBPS_CFG1 (0x03)
-#define MCP_16MHz_100kBPS_CFG2 (0xFA)
-#define MCP_16MHz_100kBPS_CFG3 (0x87)
+    MCP_16MHz_125kBPS_CFG1 = 0x03,
+    MCP_16MHz_125kBPS_CFG2 = 0xF0,
+    MCP_16MHz_125kBPS_CFG3 = 0x86,
 
-#define MCP_16MHz_95kBPS_CFG1 (0x03)
-#define MCP_16MHz_95kBPS_CFG2 (0xAD)
-#define MCP_16MHz_95kBPS_CFG3 (0x07)
+    MCP_16MHz_100kBPS_CFG1 = 0x03,
+    MCP_16MHz_100kBPS_CFG2 = 0xFA,
+    MCP_16MHz_100kBPS_CFG3 = 0x87,
 
-#define MCP_16MHz_83k3BPS_CFG1 (0x03)
-#define MCP_16MHz_83k3BPS_CFG2 (0xBE)
-#define MCP_16MHz_83k3BPS_CFG3 (0x07)
+    MCP_16MHz_95kBPS_CFG1 = 0x03,
+    MCP_16MHz_95kBPS_CFG2 = 0xAD,
+    MCP_16MHz_95kBPS_CFG3 = 0x07,
 
-#define MCP_16MHz_80kBPS_CFG1 (0x03)
-#define MCP_16MHz_80kBPS_CFG2 (0xFF)
-#define MCP_16MHz_80kBPS_CFG3 (0x87)
+    MCP_16MHz_83k3BPS_CFG1 = 0x03,
+    MCP_16MHz_83k3BPS_CFG2 = 0xBE,
+    MCP_16MHz_83k3BPS_CFG3 = 0x07,
 
-#define MCP_16MHz_50kBPS_CFG1 (0x07)
-#define MCP_16MHz_50kBPS_CFG2 (0xFA)
-#define MCP_16MHz_50kBPS_CFG3 (0x87)
+    MCP_16MHz_80kBPS_CFG1 = 0x03,
+    MCP_16MHz_80kBPS_CFG2 = 0xFF,
+    MCP_16MHz_80kBPS_CFG3 = 0x87,
 
-#define MCP_16MHz_40kBPS_CFG1 (0x07)
-#define MCP_16MHz_40kBPS_CFG2 (0xFF)
-#define MCP_16MHz_40kBPS_CFG3 (0x87)
+    MCP_16MHz_50kBPS_CFG1 = 0x07,
+    MCP_16MHz_50kBPS_CFG2 = 0xFA,
+    MCP_16MHz_50kBPS_CFG3 = 0x87,
 
-#define MCP_16MHz_33kBPS_CFG1 (0x09)
-#define MCP_16MHz_33kBPS_CFG2 (0xBE)
-#define MCP_16MHz_33kBPS_CFG3 (0x07)
+    MCP_16MHz_40kBPS_CFG1 = 0x07,
+    MCP_16MHz_40kBPS_CFG2 = 0xFF,
+    MCP_16MHz_40kBPS_CFG3 = 0x87,
 
-#define MCP_16MHz_31k25BPS_CFG1 (0x0F)
-#define MCP_16MHz_31k25BPS_CFG2 (0xF1)
-#define MCP_16MHz_31k25BPS_CFG3 (0x85)
+    MCP_16MHz_33kBPS_CFG1 = 0x09,
+    MCP_16MHz_33kBPS_CFG2 = 0xBE,
+    MCP_16MHz_33kBPS_CFG3 = 0x07,
 
-#define MCP_16MHz_25kBPS_CFG1 (0X0F)
-#define MCP_16MHz_25kBPS_CFG2 (0XBA)
-#define MCP_16MHz_25kBPS_CFG3 (0X07)
+    MCP_16MHz_31k25BPS_CFG1 = 0x0F,
+    MCP_16MHz_31k25BPS_CFG2 = 0xF1,
+    MCP_16MHz_31k25BPS_CFG3 = 0x85,
 
-#define MCP_16MHz_20kBPS_CFG1 (0x0F)
-#define MCP_16MHz_20kBPS_CFG2 (0xFF)
-#define MCP_16MHz_20kBPS_CFG3 (0x87)
+    MCP_16MHz_25kBPS_CFG1 = 0X0F,
+    MCP_16MHz_25kBPS_CFG2 = 0XBA,
+    MCP_16MHz_25kBPS_CFG3 = 0X07,
 
-#define MCP_16MHz_10kBPS_CFG1 (0x1F)
-#define MCP_16MHz_10kBPS_CFG2 (0xFF)
-#define MCP_16MHz_10kBPS_CFG3 (0x87)
+    MCP_16MHz_20kBPS_CFG1 = 0x0F,
+    MCP_16MHz_20kBPS_CFG2 = 0xFF,
+    MCP_16MHz_20kBPS_CFG3 = 0x87,
 
-#define MCP_16MHz_5kBPS_CFG1 (0x3F)
-#define MCP_16MHz_5kBPS_CFG2 (0xFF)
-#define MCP_16MHz_5kBPS_CFG3 (0x87)
+    MCP_16MHz_10kBPS_CFG1 = 0x1F,
+    MCP_16MHz_10kBPS_CFG2 = 0xFF,
+    MCP_16MHz_10kBPS_CFG3 = 0x87,
 
-#define MCP_16MHz_666kBPS_CFG1 (0x00)
-#define MCP_16MHz_666kBPS_CFG2 (0xA0)
-#define MCP_16MHz_666kBPS_CFG3 (0x04)
+    MCP_16MHz_5kBPS_CFG1 = 0x3F,
+    MCP_16MHz_5kBPS_CFG2 = 0xFF,
+    MCP_16MHz_5kBPS_CFG3 = 0x87,
 
-#define CAN_5KBPS           1
-#define CAN_10KBPS          2
-#define CAN_20KBPS          3
-#define CAN_25KBPS          4
-#define CAN_31K25BPS        5
-#define CAN_33KBPS          6
-#define CAN_40KBPS          7
-#define CAN_50KBPS          8
-#define CAN_80KBPS          9
-#define CAN_83K3BPS         10
-#define CAN_95KBPS          11
-#define CAN_100KBPS         12
-#define CAN_125KBPS         13
-#define CAN_200KBPS         14
-#define CAN_250KBPS         15
-#define CAN_500KBPS         16
-#define CAN_666KBPS         17
-#define CAN_1000KBPS        18
+    MCP_16MHz_666kBPS_CFG1 = 0x00,
+    MCP_16MHz_666kBPS_CFG2 = 0xA0,
+    MCP_16MHz_666kBPS_CFG3 = 0x04
+};
+
+enum {
+    MCP_8MHz_1000kBPS_CFG1 = 0x00,
+    MCP_8MHz_1000kBPS_CFG2 = 0x80,
+    MCP_8MHz_1000kBPS_CFG3 = 0x00,
+
+    MCP_8MHz_500kBPS_CFG1 = 0x00,
+    MCP_8MHz_500kBPS_CFG2 = 0x90,
+    MCP_8MHz_500kBPS_CFG3 = 0x02,
+
+    MCP_8MHz_250kBPS_CFG1 = 0x00,
+    MCP_8MHz_250kBPS_CFG2 = 0xb1,
+    MCP_8MHz_250kBPS_CFG3 = 0x05,
+
+    MCP_8MHz_200kBPS_CFG1 = 0x00,
+    MCP_8MHz_200kBPS_CFG2 = 0xb4,
+    MCP_8MHz_200kBPS_CFG3 = 0x06,
+
+    MCP_8MHz_125kBPS_CFG1 = 0x01,
+    MCP_8MHz_125kBPS_CFG2 = 0xb1,
+    MCP_8MHz_125kBPS_CFG3 = 0x05,
+
+    MCP_8MHz_100kBPS_CFG1 = 0x01,
+    MCP_8MHz_100kBPS_CFG2 = 0xb4,
+    MCP_8MHz_100kBPS_CFG3 = 0x06,
+
+    MCP_8MHz_80kBPS_CFG1 = 0x01,
+    MCP_8MHz_80kBPS_CFG2 = 0xbf,
+    MCP_8MHz_80kBPS_CFG3 = 0x07,
+
+    MCP_8MHz_50kBPS_CFG1 = 0x03,
+    MCP_8MHz_50kBPS_CFG2 = 0xb4,
+    MCP_8MHz_50kBPS_CFG3 = 0x06,
+
+    MCP_8MHz_40kBPS_CFG1 = 0x03,
+    MCP_8MHz_40kBPS_CFG2 = 0xbf,
+    MCP_8MHz_40kBPS_CFG3 = 0x07,
+
+    MCP_8MHz_31k25BPS_CFG1 = 0x07,
+    MCP_8MHz_31k25BPS_CFG2 = 0xa4,
+    MCP_8MHz_31k25BPS_CFG3 = 0x04,
+
+    MCP_8MHz_20kBPS_CFG1 = 0x07,
+    MCP_8MHz_20kBPS_CFG2 = 0xbf,
+    MCP_8MHz_20kBPS_CFG3 = 0x07,
+
+    MCP_8MHz_10kBPS_CFG1 = 0x0f,
+    MCP_8MHz_10kBPS_CFG2 = 0xbf,
+    MCP_8MHz_10kBPS_CFG3 = 0x07,
+
+    MCP_8MHz_5kBPS_CFG1 = 0x1f,
+    MCP_8MHz_5kBPS_CFG2 = 0xbf,
+    MCP_8MHz_5kBPS_CFG3 = 0x07
+};
+
+enum {
+    CAN_5KBPS    =  1,
+    CAN_10KBPS   =  2,
+    CAN_20KBPS   =  3,
+    CAN_25KBPS   =  4,
+    CAN_31K25BPS =  5,
+    CAN_33KBPS   =  6,
+    CAN_40KBPS   =  7,
+    CAN_50KBPS   =  8,
+    CAN_80KBPS   =  9,
+    CAN_83K3BPS  = 10,
+    CAN_95KBPS   = 11,
+    CAN_100KBPS  = 12,
+    CAN_125KBPS  = 13,
+    CAN_200KBPS  = 14,
+    CAN_250KBPS  = 15,
+    CAN_500KBPS  = 16,
+    CAN_666KBPS  = 17,
+    CAN_1000KBPS = 18
+};
 
 namespace MessageState {
     enum {
