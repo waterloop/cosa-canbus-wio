@@ -11,7 +11,7 @@ void setup() {
     uart.begin(115200);
     trace.begin(&uart);
 
-    while(bus.begin(CAN_500KBPS) != Result::OK) {
+    while(bus.begin(CAN_500KBPS, MCP_8MHz) != Result::OK) {
         trace << "CAN init failed, retrying" << endl;
         delay(100);
     }

@@ -21,7 +21,7 @@ namespace wlp {
         **   Result::OK on success
         **   Result::Failed on failure
         */
-        uint8_t begin(uint8_t can_speed);
+        uint8_t begin(uint8_t can_speed, uint8_t clock_speed);
         /*
         ** Set filter number `num` to  `data`. Filters 0 through 5 are available.
         **
@@ -117,38 +117,38 @@ namespace wlp {
         uint8_t   message_data[Limit::MessageBufferLength];
 
         // Control commands
-        uint8_t configure_rate(const uint8_t bus_rate);
+        uint8_t configure_rate(uint8_t bus_rate, uint8_t clock_speed);
         void init_buffers();
         uint8_t read_status();
         void reset();
-        uint8_t set_control_mode(const uint8_t new_mode);
+        uint8_t set_control_mode(uint8_t new_mode);
 
         // Register commands
-        uint8_t read_register(const uint8_t address);
+        uint8_t read_register(uint8_t address);
         void read_registers(
-                const uint8_t address,
-                uint8_t values[], 
-                const uint8_t n);
-        void modify_register(
-                const uint8_t address,
-                const uint8_t mask,
-                const uint8_t data);
-        void set_register(
-                const uint8_t address,
-                const uint8_t value);
-        void set_registers(
-                const uint8_t address,
+                uint8_t address,
                 uint8_t values[],
-                const uint8_t n);
+                uint8_t n);
+        void modify_register(
+                uint8_t address,
+                uint8_t mask,
+                uint8_t data);
+        void set_register(
+                uint8_t address,
+                uint8_t value);
+        void set_registers(
+                uint8_t address,
+                uint8_t values[],
+                uint8_t n);
 
         // Generic transmission commands
         void write_id(
-                const uint8_t mcp_addr,
-                const uint32_t id);
-        uint32_t read_id(const uint8_t mcp_addr);
-        void write_CAN_msg(const uint8_t buffer_sidh_addr);
-        void read_CAN_msg(const uint8_t buffer_sidh_addr);
-        void start_transmit(const uint8_t mcp_addr);
+                uint8_t mcp_addr,
+                uint32_t id);
+        uint32_t read_id(uint8_t mcp_addr);
+        void write_CAN_msg(uint8_t buffer_sidh_addr);
+        void read_CAN_msg(uint8_t buffer_sidh_addr);
+        void start_transmit(uint8_t mcp_addr);
         uint8_t get_next_free_buf(uint8_t *txbuf);
 
         // Message operations
