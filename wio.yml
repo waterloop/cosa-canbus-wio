@@ -1,11 +1,20 @@
 type: pkg
 
 project:
-  name: cosa-canbus-wio
-  version: 0.0.1
+  name: cosa-canbus
+  version: 1.0.0
+  author: Dmytro Shynkevych <dm.shynk@gmail.com> (https://github.com/hermord)
+  contributors:
+  - Jeff Niu <me@jeffniu.com> (http://jeffniu.com)
+  description: MCP2515 CAN-BUS driver for Arduino and Cosa
+  organization: Waterloop
   keywords:
   - wio
   - pkg
+  - c++
+  - waterloop
+  - cosa
+  - canbus
   compile_options:
     wio_version: 0.4.0
 
