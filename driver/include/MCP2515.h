@@ -30,6 +30,16 @@ namespace wlp {
 
         uint8_t m_dataLength;
         uint8_t m_messageData[Limit::MessageBufferLength];
+
+        void write_CAN_msg(uint8_t bufferSidhAddr);
+        void read_CAN_msg(uint8_t bufferSidhAddr);
+        void start_transmit(uint8_t mcpAddr);
+        uint8_t get_next_free_buf(uint8_t *txBuf);
+
+        void set_msg(uint32_t id, uint8_t len, uint8_t *data);
+        void clear_msg();
+        uint8_t read_msg();
+        uint8_t send_msg();
     };
 
 }
