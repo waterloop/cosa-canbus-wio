@@ -81,6 +81,8 @@ static uint32_t read_id(MCP2515Base *base, uint8_t address) {
     return id;
 }
 
+MCP2515::MCP2515(MCP2515Base *base) : m_base(base) {}
+
 uint8_t MCP2515::begin(uint8_t canSpeed, uint8_t clockSpeed) {
     m_base->reset();
     uint8_t res = set_control_mode(m_base, Mode::Config);
