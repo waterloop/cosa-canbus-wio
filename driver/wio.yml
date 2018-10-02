@@ -13,8 +13,10 @@ project:
 targets:
   tests:
     src: tests
+    platform: native
 
 dependencies:
   mcp2515-base:
+    link_visibility: PUBLIC
     version: 1.0.1
 

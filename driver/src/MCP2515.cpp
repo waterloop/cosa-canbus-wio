@@ -1,3 +1,4 @@
+#include "MCP2515Rates.h"
 #include <MCP2515.h>
 
 using namespace wlp;
@@ -48,7 +49,7 @@ static void write_id(MCP2515Base *base, uint8_t address, uint32_t id) {
     base->set_registers(address, buf, 4);
 }
 
-static void init_buffers(MCP2515 *base) {
+static void init_buffers(MCP2515Base *base) {
     write_id(base, Register::RXM0SIDH, 0);
     write_id(base, Register::RXM1SIDH, 0);
     write_id(base, Register::RXF0SIDH, 0);
@@ -67,7 +68,7 @@ static void init_buffers(MCP2515 *base) {
     base->set_register(Register::RXB1CTRL, 0);
 }
 
-static uint32_t read_id(MCP2515 *base, uint8_t address) {
+static uint32_t read_id(MCP2515Base *base, uint8_t address) {
     uint32_t id;
     uint8_t buf[4];
     base->read_registers(address, buf, 4);
@@ -105,18 +106,18 @@ uint8_t MCP2515::begin(uint8_t canSpeed, uint8_t clockSpeed) {
     return Result::OK;
 }
 
-uint8_t MCP2515::set_filter(uint8_t num, uint32_t data) {
+uint8_t MCP2515::set_filter(uint8_t filterNumber, uint32_t filter) {
     uint8_t res = Result::OK;
     res = set_control_mode(m_base, Mode::Config);
     if(res > 0) {
         return Result::Failed;
     }
-    if (filter_number < 0 || filter_number > 5) {
+    if (filterNumber < 0 || filterNumber > 5) {
         return Result::Failed;
-    } else if (filter_number < 3) {
-        write_id(m_base, Register::RXF0SIDH + 0x04 * filter_number, filter);
+    } else if (filterNumber < 3) {
+        write_id(m_base, Register::RXF0SIDH + 0x04 * filterNumber, filter);
     } else {
-        write_id(m_base, Register::RXF3SIDH + 0x04 * (filter_number - 3), filter);
+        write_id(m_base, Register::RXF3SIDH + 0x04 * (filterNumber - 3), filter);
     }
     res = set_control_mode(m_base, Mode::Normal);
     if(res != Result::OK) {
@@ -125,16 +126,16 @@ uint8_t MCP2515::set_filter(uint8_t num, uint32_t data) {
     return Result::OK;
 }
 
-uint8_t MCP2515::set_mask(uint8_t num, uint32_t data) {
+uint8_t MCP2515::set_mask(uint8_t maskNumber, uint32_t mask) {
     uint8_t res = Result::OK;
     res = set_control_mode(m_base, Mode::Config);
     if (res > 0) {
         return Result::Failed;
     }
-    if (mask_number == 0) {
-        write_id(m_base, Register::RXM0SIDH, id);
-    } else if (mask_number == 1) {
-        write_id(m_base, Register::RXM1SIDH, id);
+    if (maskNumber == 0) {
+        write_id(m_base, Register::RXM0SIDH, m_id);
+    } else if (maskNumber == 1) {
+        write_id(m_base, Register::RXM1SIDH, m_id);
     } else {
         return Result::Failed;
     }
@@ -163,7 +164,7 @@ uint8_t MCP2515::get_error() {
 }
 
 uint8_t MCP2515::get_message_status() {
-    uint8_t res = read_status();
+    uint8_t res = m_base->read_status();
     return (res & StatusMask::RXInterruptMask)
         ? MessageState::MessagePending
         : MessageState::NoMessage;
@@ -201,8 +202,8 @@ void MCP2515::read_CAN_msg(uint8_t bufferSidhAddr) {
 }
 
 void MCP2515::start_transmit(uint8_t mcpAddr) {
-    modify_register(
-            mcp_addr - 1,
+    m_base->modify_register(
+            mcpAddr - 1,
             TXControlMask::RequestInProcess,
             TXControlMask::RequestInProcess);
 }
@@ -244,7 +245,7 @@ void MCP2515::clear_msg() {
 }
 
 uint8_t MCP2515::read_msg() {
-    uint8_t status = read_status(m_base);
+    uint8_t status = m_base->read_status();
     uint8_t res;
     if (status & Status::RX0InterruptFired) {
         read_CAN_msg(Buffer::RX0);

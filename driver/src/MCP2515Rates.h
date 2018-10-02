@@ -1,6 +1,8 @@
 #ifndef __MCP2515_RATES_H__
 #define __MCP2515_RATES_H__
 
+#include <stdint.h>
+
 #define NUM_RATES(arr) (sizeof(arr) / sizeof(arr[0]) / 3)
 
 static uint8_t rates16[] = {
