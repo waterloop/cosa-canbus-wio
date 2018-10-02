@@ -14,7 +14,7 @@ using namespace wlp;
 #endif
 
 #if MCP2515_DEBUG_LEVEL >= 1
-extern int printf(const char *msg, ...);
+extern "C" int printf(const char *msg, ...);
 #define dprintf(...) printf(__VA_ARGS__)
 #else
 #define dprintf(...)
@@ -62,7 +62,8 @@ linux::MCP2515::MCP2515(const char *dev, int busSpeed) :
         m_speed(busSpeed),
         m_bitsPerWord(8),
         m_mode(0),
-        m_lsbFirst(0) {
+        m_lsbFirst(0),
+        m_fd(-1) {
     m_spiBuffer[0] = {};
     m_spiBuffer[0].speed_hz = m_speed;
     m_spiBuffer[0].bits_per_word = m_bitsPerWord;

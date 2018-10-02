@@ -6,6 +6,10 @@ project:
   keywords:
   - wio
   - pkg
+  definitions:
+    optional:
+      private:
+      - MCP2515_DEBUG_LEVEL
   compile_options:
     wio_version: 0.4.2
     default_target: tests
@@ -14,6 +18,9 @@ targets:
   tests:
     src: tests
     platform: native
+    definitions:
+      package:
+      - MCP2515_DEBUG_LEVEL=1
 
 dependencies:
   mcp2515-base:

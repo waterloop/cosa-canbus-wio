@@ -10,6 +10,7 @@ enum {
 };
 
 int main(void) {
+    bus.begin();
     bus.reset();
     bus.modify_register(Control, Mode, Config);
     uint8_t mode = bus.read_register(Control) & Mode;
