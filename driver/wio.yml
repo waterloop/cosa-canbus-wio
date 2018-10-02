@@ -1,11 +1,14 @@
 type: pkg
 
 project:
-  name: driver
-  version: 0.0.1
+  name: mcp2515-driver
+  version: 1.0.0
   keywords:
   - wio
   - pkg
+  - mcp2515
+  - emd
+  - canbus
   compile_options:
     wio_version: 0.4.2
     default_target: tests
