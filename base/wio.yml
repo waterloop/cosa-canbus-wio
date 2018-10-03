@@ -1,0 +1,20 @@
+type: pkg
+
+project:
+  name: mcp2515-base
+  version: 1.0.1
+  keywords:
+  - wio
+  - pkg
+  - mcp2515
+  - embedded
+  compile_options:
+    header_only: true
+    wio_version: 0.4.2
+    default_target: tests
+
+targets:
+  tests:
+    src: tests
+    platform: native
+
