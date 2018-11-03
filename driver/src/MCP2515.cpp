@@ -101,6 +101,10 @@ uint8_t MCP2515::begin(uint8_t canSpeed, uint8_t clockSpeed) {
             Register::RXB1CTRL,
             RXControlMask::AcceptAny,
             RXControlMask::AcceptAnyID);
+    m_base->modify_register(
+            Register::InterruptEnable,
+            InterruptFlag::RX0 | InterruptFlag::RX1,
+            InterruptFlag::RX0 | InterruptFlag::RX1);
     res = set_control_mode(m_base, Mode::Normal);
     if (Result::OK != res) {
         return Result::Failed;
