@@ -21,12 +21,15 @@ int main(void) {
     while (true) {
         base.wait_interrupt(500);
         while (bus.get_message_status() == MessageState::MessagePending) {
-            bus.read_buffer(8, buf);
-            printf("Data from %d\n", bus.get_id());
-            for (int i = 0; i < 8; ++i) {
-                printf("%02x ", buf[i]);
+            auto state = bus.read_buffer(8, buf);
+
+            if (state == MessageState::MessageFetched) {
+                printf("Data from %d\n", bus.get_id());
+                for (int i = 0; i < 8; ++i) {
+                    printf("%02x ", buf[i]);
+                }
+                printf("\n");
             }
-            printf("\n");
         }
     }
 }

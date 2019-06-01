@@ -38,3 +38,7 @@ ehthumbs_vista.db
 *.dll
 
 .vscode
+.idea/
+cmake-build-debug/
+CMakeLists.txt
+args.cmake

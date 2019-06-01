@@ -20,6 +20,10 @@ targets:
 dependencies:
   mcp2515-driver:
     version: 1.0.0
+    url:
+      name: github.com/waterloop/mcp2515-wio
+      dir: driver
+      options:
+        ref: driver-1.0.0
   mcp2515-linux:
     version: 1.0.0
-

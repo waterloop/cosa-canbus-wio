@@ -25,5 +25,10 @@ dependencies:
   mcp2515-cosa:
     version: 1.0.0
   mcp2515-driver:
+    url:
+      name: github.com/waterloop/mcp2515-wio
+      dir: driver
+      options:
+        ref: driver-1.0.0
     version: 1.0.0
 

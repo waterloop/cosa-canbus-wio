@@ -20,11 +20,15 @@ void setup() {
 
 void loop() {
     if (bus.get_message_status() == MessageState::MessagePending) {
-        bus.read_buffer(8, buf);
-        trace << "Data from " << bus.get_id() << endl;
-        for (int i = 0; i < 8; ++i) {
-            trace << buf[i] << " ";
+        auto state = bus.read_buffer(8, buf);
+        if (state == MessageState::MessageFetched) {
+            trace << "Data from " << bus.get_id() << endl;
+            for (int i = 0; i < 8; ++i) {
+                trace << buf[i] << " ";
+            }
+            trace << endl;
+        } else {
+            trace << "Data read failed with state: " << state << endl;
         }
-        trace << endl;
     }
 }
