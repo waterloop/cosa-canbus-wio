@@ -36,3 +36,5 @@ ehthumbs_vista.db
 *.so
 *.dylib
 *.dll
+
+.vscode

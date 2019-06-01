@@ -157,11 +157,13 @@ uint8_t MCP2515::send_buffer(uint32_t id, uint8_t len, uint8_t *buf) {
     return send_msg();
 }
 
-void MCP2515::read_buffer(uint8_t len, uint8_t *buf) {
-    read_msg();
+uint8_t MCP2515::read_buffer(uint8_t len, uint8_t *buf) {
+    auto state = read_msg();
     for (int i = 0; i < m_dataLength && i < len; ++i) {
         buf[i] = m_messageData[i];
     }
+
+    return state;
 }
 
 uint8_t MCP2515::get_error() {

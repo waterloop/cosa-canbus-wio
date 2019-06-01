@@ -14,7 +14,7 @@ namespace wlp {
         uint8_t set_filter(uint8_t num, uint32_t data);
         uint8_t set_mask(uint8_t num, uint32_t data);
         uint8_t send_buffer(uint32_t id, uint8_t len, uint8_t *buf);
-        void read_buffer(uint8_t len, uint8_t *buf);
+        uint8_t read_buffer(uint8_t len, uint8_t *buf);
         uint8_t get_error();
         uint8_t get_message_status();
         uint32_t get_id();
