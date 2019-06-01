@@ -15,9 +15,12 @@ int main(void) {
     }
     printf("CAN inited\n");
 
+    base.setup_interrupt(25);
+
     uint8_t buf[8];
     while (true) {
-        if (bus.get_message_status() == MessageState::MessagePending) {
+        base.wait_interrupt(500);
+        while (bus.get_message_status() == MessageState::MessagePending) {
             bus.read_buffer(8, buf);
             printf("Data from %d\n", bus.get_id());
             for (int i = 0; i < 8; ++i) {

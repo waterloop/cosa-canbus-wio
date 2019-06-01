@@ -3,12 +3,16 @@
 
 #include <MCP2515Base.h>
 #include <linux/spi/spidev.h>
+#include <poll.h>
 
 namespace wlp {
     namespace linux {
         class MCP2515 : public wlp::MCP2515Base {
         public:
             MCP2515(const char *dev, int busSpeed);
+
+            int setup_interrupt(int gpio);
+            int wait_interrupt(int timeout);
 
             int begin(void);
 
@@ -27,6 +31,9 @@ namespace wlp {
             uint8_t m_mode;
             uint8_t m_lsbFirst;
             int m_fd;
+            int m_intfd;
+            struct pollfd m_pfd;
+            uint8_t m_garbage[8];
 
             spi_ioc_transfer m_spiBuffer[2];
         };
